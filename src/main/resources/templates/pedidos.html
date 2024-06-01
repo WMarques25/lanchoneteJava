@@ -11,6 +11,9 @@
                 <div th:text="${itemPedido.itemCardapio.nome}">
                 </div>
             </div>
+            <form th:action="@{'concluir/' + ${pedido.id}}" method=post>
+                <input type="submit" value="Pronto">
+            </form>
         </div>
     </div>
 </body>

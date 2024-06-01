@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.atvPOO.lanchonete.Models.itemCardapio.*;
@@ -32,15 +33,15 @@ public class IndexController {
     
     @PostMapping("/pedido")
     public String submitPedido(@ModelAttribute Pedido pedido) {
-    Pedido savedPedido = pedidoService.savePedido(pedido);
-    for (int itemId : pedido.getItensCardapioSelecionados()) {
-        ItemPedido itemPedido = new ItemPedido();
-        itemPedido.setPedido(savedPedido);
-        itemPedido.setItemCardapio(itemCardapioService.getItemCardapio(itemId));
-        itemPedidoService.saveItemPedido(itemPedido);
+        Pedido savedPedido = pedidoService.savePedido(pedido);
+        for (int itemId : pedido.getItensCardapioSelecionados()) {
+            ItemPedido itemPedido = new ItemPedido();
+            itemPedido.setPedido(savedPedido);
+            itemPedido.setItemCardapio(itemCardapioService.getItemCardapio(itemId));
+            itemPedidoService.saveItemPedido(itemPedido);
+        }
+        return "redirect:/";
     }
-    return "redirect:/";
-}
 
     @GetMapping("/cardapio")
     public String cardapio(Model model) {
@@ -53,6 +54,34 @@ public class IndexController {
     public String pedidos(Model model) {
         model.addAttribute("todosPedidos", pedidoService.getAllPedidos());
         return "pedidos";
+    }
+
+    @PostMapping("/concluir/{id}")
+    public String concluirPedido(@PathVariable int id) {
+        Pedido pedido = pedidoService.getPedido(id);
+        pedido.setPronto(true);
+        pedidoService.savePedido(pedido);
+        return "redirect:/pedidos";
+    }
+
+    @PostMapping("/apagar/pedido/{id}")
+    public String deletarPedido(@PathVariable int id) {
+        Pedido pedido = pedidoService.getPedido(id);
+        for (ItemPedido itemPedido : pedido.getItensPedido()) {
+            itemPedidoService.deleteItemPedido(itemPedido.getId());
+        }
+        pedidoService.deletePedido(id);
+        return "redirect:/";
+    }
+
+    @PostMapping("/apagar/itemcardapio/{id}")
+    public String deletarItemCardapio(@PathVariable int id) {
+        ItemCardapio itemCardapio = itemCardapioService.getItemCardapio(id);
+        for (ItemPedido itemPedido : itemCardapio.getItensPedido()) {
+            itemPedidoService.deleteItemPedido(itemPedido.getId());
+        }
+        itemCardapioService.deleteItemCardapio(id);
+        return "redirect:/cardapio";
     }
 
     @PostMapping("/itemCardapio")

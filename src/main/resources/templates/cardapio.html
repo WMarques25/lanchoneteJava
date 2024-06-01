@@ -25,6 +25,9 @@
             <div id="nome${item.id}" th:text="${item.nome}"></div>
             <div id="componentes${item.id}" th:text="${item.componentes}"></div>
             <div id="preco${item.id}" th:text="${item.preco}"></div>
+            <form th:action="@{'apagar/itemcardapio/' + ${item.id}}" method=post>
+            	<input type="submit" value="X">
+            </form>
         </div>
     </div>
 </body>

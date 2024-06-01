@@ -19,6 +19,10 @@ public class PedidoService {
         return pedidoRepository.findByPronto(true);
     }
 
+    public Pedido getPedido(int id) {
+        return pedidoRepository.findById(id);
+    }
+
     public Pedido savePedido(Pedido pedido) {
         return pedidoRepository.save(pedido);
     }
