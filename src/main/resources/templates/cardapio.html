@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cardápio</title>
+</head>
+<body>
+    <form action="#" th:action="@{/itemCardapio}" th:object="${itemCardapio}" method="post">
+        <div>
+            <label>Nome: </label>
+            <input type="text" th:field="*{nome}">
+        </div>
+        <div>
+            <label>Componentes: </label>
+            <input type="text" th:field="*{componentes}">
+        </div>
+        <div>
+            <label>Preço: </label>
+            <input type="text" th:field="*{preco}">
+        </div>
+        <input type="submit" value="Adicionar ao cardápio">
+    </form>
+
+    <div th:each="item : ${todosItens}">
+        <div id="item${item.id}">
+            <div id="nome${item.id}" th:text="${item.nome}"></div>
+            <div id="componentes${item.id}" th:text="${item.componentes}"></div>
+            <div id="preco${item.id}" th:text="${item.preco}"></div>
+        </div>
+    </div>
+</body>
+</html>
