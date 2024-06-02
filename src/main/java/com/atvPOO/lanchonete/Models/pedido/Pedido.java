@@ -3,6 +3,7 @@ package com.atvPOO.lanchonete.Models.pedido;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.atvPOO.lanchonete.Models.itemCardapio.ItemCardapio;
 import com.atvPOO.lanchonete.Models.itemPedido.ItemPedido;
 
 import jakarta.persistence.Column;
@@ -98,6 +99,19 @@ public class Pedido {
 
     public void setItensCardapioSelecionados(List<Integer> itensCardapioSelecionados) {
         this.itensCardapioSelecionados = itensCardapioSelecionados;
+    }
+
+    /**
+     * Soma os preços de todos os itens do pedido
+     */
+    public double getTotal() {
+        double total = 0;
+        for (ItemPedido itemPedido : itensPedido) {
+            total += itemPedido.getItemCardapio().getPreco()
+                    // * itemPedido.getQuantidade()
+                    ;
+        }
+        return total;
     }
 }
 
